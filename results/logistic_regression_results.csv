@@ -1,0 +1,10 @@
+"Predictor","Odds_Ratio","CI_Lower","CI_Upper","P_value"
+"(Intercept)",170189122.62,0,2.20195994782782e+237,0.943
+"speciesK. pneumoniae",0.73,0.29,1.8,0.502
+"antibioticCIP",0.28,0.07,1.08,0.07
+"antibioticCTX",0.55,0.14,2.12,0.387
+"antibioticGEN",0.53,0.14,2,0.355
+"year",0.99,0.76,1.28,0.949
+"sample_typeSputum",0.26,0.06,1.03,0.061
+"sample_typeUrine",0.12,0.03,0.4,0.001
+"sample_typeWound",0.2,0.05,0.69,0.014
