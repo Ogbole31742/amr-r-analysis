@@ -139,3 +139,71 @@ anova_result <- anova(
 )
 
 print(anova_result)
+
+# ----------------------------------------
+# Temporal logistic regression by antibiotic
+# ----------------------------------------
+
+amp_model <- glm(
+  resistance ~ year,
+  data = amr_100[amr_100$antibiotic == "AMP", ],
+  family = binomial
+)
+
+cip_model <- glm(
+  resistance ~ year,
+  data = amr_100[amr_100$antibiotic == "CIP", ],
+  family = binomial
+)
+
+ctx_model <- glm(
+  resistance ~ year,
+  data = amr_100[amr_100$antibiotic == "CTX", ],
+  family = binomial
+)
+
+gen_model <- glm(
+  resistance ~ year,
+  data = amr_100[amr_100$antibiotic == "GEN", ],
+  family = binomial
+)
+
+# Extract odds ratios, confidence intervals and p-values
+
+temporal_results <- data.frame(
+  antibiotic = c("AMP", "CIP", "CTX", "GEN"),
+  OR = c(
+    exp(coef(amp_model)["year"]),
+    exp(coef(cip_model)["year"]),
+    exp(coef(ctx_model)["year"]),
+    exp(coef(gen_model)["year"])
+  ),
+  CI_lower = c(
+    exp(confint(amp_model)["year", 1]),
+    exp(confint(cip_model)["year", 1]),
+    exp(confint(ctx_model)["year", 1]),
+    exp(confint(gen_model)["year", 1])
+  ),
+  CI_upper = c(
+    exp(confint(amp_model)["year", 2]),
+    exp(confint(cip_model)["year", 2]),
+    exp(confint(ctx_model)["year", 2]),
+    exp(confint(gen_model)["year", 2])
+  ),
+  p_value = c(
+    summary(amp_model)$coefficients["year", "Pr(>|z|)"],
+    summary(cip_model)$coefficients["year", "Pr(>|z|)"],
+    summary(ctx_model)$coefficients["year", "Pr(>|z|)"],
+    summary(gen_model)$coefficients["year", "Pr(>|z|)"]
+  )
+)
+
+print(temporal_results)
+
+# Save results
+
+write.csv(
+  temporal_results,
+  "results/temporal_logistic_regression_results.csv",
+  row.names = FALSE
+)
